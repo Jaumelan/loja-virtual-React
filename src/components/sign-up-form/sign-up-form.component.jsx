@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { createAuthUserWithEmailAndPasword, createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
+import FormInput from "../form-input/form-input.component";
+import Button from "../button/button.component";
+import "./sign-up-form.styles.scss";
 
 const defaultFormFields = {
     displayName: "",
@@ -9,14 +12,14 @@ const defaultFormFields = {
 };
 
 const SignUpForm = () => {
-    const [ formFields, setFormFields ] = useState( defaultFormFields );
+    const [formFields, setFormFields] = useState(defaultFormFields);
     const { displayName, email, password, confirmPassword } = formFields;
 
     console.log(formFields);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setFormFields({...formFields, [name]: value});
+        setFormFields({ ...formFields, [name]: value });
     };
 
     const resetFormFields = () => {
@@ -26,41 +29,69 @@ const SignUpForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        if(password !== confirmPassword) {
+        if (password !== confirmPassword) {
             alert("passwords do not match");
             return;
         }
 
         try {
-            const { user } = await createAuthUserWithEmailAndPasword( email, password);
-            await createUserDocumentFromAuth( user, {displayName});
+            const { user } = await createAuthUserWithEmailAndPasword(email, password);
+            await createUserDocumentFromAuth(user, { displayName });
             resetFormFields();
-        } catch(error) {
-            if(error.code === "auth/email-already-in-use") {
+        } catch (error) {
+            if (error.code === "auth/email-already-in-use") {
                 alert("Cannot create user, email already in use");
             } else {
                 console.log("user creation encountered an error ", error);
-            } 
+            }
         }
     }
 
     return (
-        <div>
-            <h1>Sign up with your email and password</h1>
+        <div className="sign-up-container">
+            <h2>Don't have an account?</h2>
+            <span>Sign up with your email and password</span>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="">Display Name</label>
-                <input type="text" required name="displayName" onChange={handleChange} value={displayName} />
 
-                <label htmlFor="">Email</label>
-                <input type="email" required name="email" onChange={handleChange} value={email} />
+                <FormInput
+                    label="Display Name"
+                    type="text"
+                    required
+                    name="displayName"
+                    onChange={handleChange}
+                    value={displayName}
+                />
 
-                <label htmlFor="">Password</label>
-                <input type="password" required name="password" onChange={handleChange} value={password} />
+                <FormInput
+                    label="Email"
+                    type="email"
+                    required
+                    name="email"
+                    onChange={handleChange}
+                    value={email}
+                />
 
-                <label htmlFor="">Confirm Password</label>
-                <input type="password" required name="confirmPassword" onChange={handleChange} value={confirmPassword} />
+                <FormInput
+                    label="Password"
+                    type="password"
+                    required
+                    name="password"
+                    onChange={handleChange}
+                    value={password}
+                />
 
-                <button type="submit">Sign Up</button>
+                <FormInput
+                    label="Confirm Password"
+                    type="password"
+                    required
+                    name="confirmPassword"
+                    onChange={handleChange}
+                    value={confirmPassword}
+                />
+
+                <Button
+                    type="submit"
+                >Sign Up</Button>
             </form>
         </div>
     )
