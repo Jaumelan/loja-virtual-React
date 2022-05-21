@@ -2,7 +2,7 @@ import { useContext, useState, useEffect, Fragment } from "react";
 import { useParams } from "react-router-dom";
 import { CategoriesContext } from "../../context/categories.contex";
 import ProductCard from "../../components/product-card/product-card.component";
-import "./category.styles.scss";
+import {CategoryTitle, CategoryContainer} from "./category.styles.js";
 
 const Category = () => {
   const { category } = useParams();
@@ -15,13 +15,13 @@ const Category = () => {
 
   return (
     <Fragment>
-      <h2 children="category-title">{category.toLocaleUpperCase()}</h2>
-      <div className="category-container">
+      <CategoryTitle>{category.toLocaleUpperCase()}</CategoryTitle>
+      <CategoryContainer>
         {products &&
           products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
-      </div>
+      </CategoryContainer>
     </Fragment>
   );
 };
