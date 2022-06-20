@@ -2,8 +2,6 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-
-import { CartProvider } from "../src/context/cart.contex";
 import App from "./App";
 import { store } from "./store/store";
 import "./index.scss";
@@ -14,9 +12,7 @@ root.render(
   <StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <CartProvider>
-          <App />
-        </CartProvider>
+        <App />
       </BrowserRouter>
     </Provider>
   </StrictMode>
